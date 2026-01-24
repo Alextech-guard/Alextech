@@ -74,11 +74,24 @@
             flex: 1;
             min-width: 300px;
         }
+        
+        /* --- PREMIUM IMAGE EFFECTS (ALEX UPGRADE) --- */
         .screen img {
             width: 100%;
             border-radius: 10px;
             border: 2px solid #333;
+            cursor: zoom-in; /* Δείχνει ότι ανοίγει */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
         }
+        
+        /* Hover Effect: Μεγέθυνση και Σκιά */
+        .screen img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.2); /* Πορτοκαλί λάμψη */
+            border-color: var(--primary);
+        }
+        /* ------------------------------------------- */
+
         .label {
             display: block;
             margin-bottom: 10px;
@@ -111,6 +124,34 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        /* --- LIGHTBOX STYLES (Το παράθυρο που ανοίγει) --- */
+        #lightbox {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Σκοτεινό φόντο */
+            display: none; /* Κρυφό στην αρχή */
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            animation: zoomIn 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -121,28 +162,26 @@
             <p class="subtitle">Διάβασε ειδήσεις στην Ελλάδα χωρίς χάος.<br>Αυτόματο κλείσιμο Cookies, Popups και Ειδοποιήσεων.</p>
             
             <div>
-                <a href="#" class="btn btn-firefox">🦊 Λήψη για Firefox</a>
+                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Λήψη για Firefox</a>
                 <a href="#" class="btn btn-chrome">⏳ Chrome (Σύντομα)</a>
             </div>
         </header>
 
         <div class="demo-section">
             <h2>Δες τη διαφορά</h2>
+            <p style="font-size: 0.9rem; color: #888; margin-bottom: 20px;">(Κάνε κλικ στις εικόνες για μεγέθυνση)</p>
             <div class="comparison">
                 <div class="screen">
                     <span class="label bad">ΠΡΙΝ (ΧΑΟΣ)</span>
-                    <img src="before.png" alt="Πριν την επέκταση">
+                    <img src="before.png" alt="Πριν την επέκταση" class="zoomable">
                 </div>
                 <div class="screen">
                     <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ)</span>
-                    <img src="after.png" alt="Με την επέκταση">
+                    <img src="after.png" alt="Με την επέκταση" class="zoomable">
                 </div>
             </div>
         </div>
-        <div style="margin-top: 30px; width: 100%; text-align: center;">
-                <span style="display: block; margin-bottom: 10px; font-weight: bold; color: #FFD700; letter-spacing: 1px;">✨ PREMIUM FEATURES FOR FREE</span>
-                <img src="popup.png" alt="Το μενού της επέκτασης" style="width: 100%; max-width: 600px; border-radius: 10px; border: 2px solid #333;">
-            </div>
+
         <div class="features">
             <div class="feature-item">
                 <span class="icon">🚀</span>
@@ -157,7 +196,7 @@
             <div class="feature-item">
                 <span class="icon">🇬🇷</span>
                 <strong>Made in Greece</strong>
-                <p>Φτιαγμένο με έμφαση στα ελληνικά sites.</p>
+                <p>Φτιαγμένο ειδικά για τα ελληνικά sites.</p>
             </div>
         </div>
 
@@ -166,6 +205,45 @@
         </footer>
     </div>
 
-</body>
+    <script>
+        // 1. Φτιάχνουμε το στοιχείο Lightbox δυναμικά
+        const lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        document.body.appendChild(lightbox);
 
+        // 2. Επιλέγουμε όλες τις εικόνες που θέλουμε να ανοίγουν
+        const images = document.querySelectorAll('.screen img');
+
+        // 3. Προσθέτουμε τη λειτουργία κλικ σε κάθε εικόνα
+        images.forEach(image => {
+            image.addEventListener('click', e => {
+                lightbox.classList.add('active');
+                // Δημιουργούμε την εικόνα μέσα στο lightbox
+                const img = document.createElement('img');
+                img.src = image.src;
+                
+                // Καθαρίζουμε το lightbox από παλιά και βάζουμε τη νέα εικόνα
+                while (lightbox.firstChild) {
+                    lightbox.removeChild(lightbox.firstChild);
+                }
+                lightbox.appendChild(img);
+                
+                // Εμφάνιση
+                lightbox.style.display = 'flex';
+            });
+        });
+
+        // 4. Κλείσιμο όταν πατάμε οπουδήποτε στο μαύρο φόντο
+        lightbox.addEventListener('click', e => {
+            if (e.target !== e.currentTarget) return; // Αν πατήσεις στην εικόνα δεν κλείνει (προαιρετικό)
+            lightbox.style.display = 'none';
+        });
+        
+        // Κλείσιμο και αν πατήσεις πάνω στην εικόνα (για ευκολία στα κινητά)
+        lightbox.addEventListener('click', () => {
+             lightbox.style.display = 'none';
+        });
+    </script>
+
+</body>
 </html>
