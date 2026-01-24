@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Tools - Καθαρό Internet</title>
+    <title>Alex Tools - Web extension</title>
     <style>
         :root {
             --primary: #FF7143; /* Το πορτοκαλί του Firefox */
-            --bg: #121212;
+            --bg: #121212; /* Το βασικό μαύρο */
             --text: #ffffff;
             --card: #1E1E1E;
         }
@@ -19,38 +19,114 @@
             padding: 0;
             line-height: 1.6;
             text-align: center;
+            overflow-x: hidden; /* Για να μην βγάζει μπάρα κύλισης δεξιά */
         }
+
+        /* --- SPACE BACKGROUND ANIMATION --- */
+        /* Το γενικό δοχείο για το διάστημα που μένει πίσω από όλα */
+        #space-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10; /* Πίσω από το περιεχόμενο */
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); /* Λίγο πιο "βαθύ" μαύρο/μπλε */
+            overflow: hidden;
+        }
+
+        /* Το στυλ για τα αστέρια (κουκκίδες) */
+        .star-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 2px;
+            width: 2px;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 
+                /* Γεννήτρια τυχαίων αστεριών με CSS shadows για 3 επίπεδα */
+                /* Layer 1 (Πολλά μικρά) */
+                -40vw 20vh 0px 0px #fff, 20vw 30vh 0px 0px #fff, -10vw -40vh 0px 1px #fff, 30vw -20vh 0px 0px #fff, -30vw 10vh 0px 1px #fff, 10vw 40vh 0px 0px #fff, 40vw -30vh 0px 1px #fff, -20vw -10vh 0px 0px #fff,
+                /* Layer 2 (Λιγότερα μεσαία) */
+                15vw 15vh 1px 0px #ccc, -25vw -25vh 1px 0px #ccc, 35vw -5vh 1px 0px #ccc, -5vw 35vh 1px 0px #ccc,
+                /* Layer 3 (Λίγα μεγάλα) */
+                -15vw 40vh 2px 1px #aaa, 25vw -35vh 2px 1px #aaa;
+            opacity: 0;
+            animation: zoom 20s linear infinite;
+        }
+
+        /* Διαφορετικές ταχύτητες και καθυστερήσεις για βάθος */
+        .layer-1 { animation-duration: 25s; }
+        .layer-2 { animation-duration: 18s; animation-delay: 5s; }
+        .layer-3 { animation-duration: 12s; animation-delay: 2s; }
+
+        /* Η κίνηση ζουμ προς τον θεατή */
+        @keyframes zoom {
+            0% { transform: scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        /* Κομήτης */
+        .comet {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px; /* Μήκος ουράς */
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(-45deg); /* Διαγώνια κίνηση */
+            opacity: 0;
+            animation: comet-shoot 15s ease-in-out infinite; /* Πολύ αργή επανάληψη */
+            animation-delay: 8s; /* Ξεκινάει λίγο αργότερα */
+        }
+
+        /* Η κίνηση του κομήτη */
+        @keyframes comet-shoot {
+            0% { transform: translate(-100px, -100px) rotate(-45deg); opacity: 1; }
+            20% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; } /* Διασχίζει την οθόνη γρήγορα */
+            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; } /* Περιμένει μέχρι την επόμενη επανάληψη */
+        }
+
+        /* --- ΤΕΛΟΣ SPACE ANIMATION CSS --- */
+
+
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
+            position: relative; /* Για να είναι πάνω από τα αστέρια */
+            z-index: 1;
         }
         /* Hero Section */
         header {
-            padding: 60px 20px;
+            padding: 50px 20px;
         }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Λίγη σκιά για να ξεχωρίζει από τα αστέρια */ }
         .highlight { color: var(--primary); }
-        p.subtitle { font-size: 1.2rem; color: #aaaaaa; margin-bottom: 30px; }
+        p.subtitle { font-size: 1.1rem; color: #aaaaaa; margin-bottom: 30px; }
         
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 12px 25px;
             margin: 10px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .btn-firefox {
             background-color: var(--primary);
             color: white;
             border: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 113, 67, 0.3); /* Λίγη λάμψη στο κουμπί */
         }
         .btn-chrome {
-            background-color: transparent;
+            background-color: rgba(0,0,0,0.3); /* Πιο διαφανές για να φαίνονται τα αστέρια */
             color: #aaaaaa;
             border: 2px solid #555;
             cursor: not-allowed;
@@ -59,10 +135,12 @@
 
         /* Demo Section */
         .demo-section {
-            margin-top: 50px;
+            margin-top: 40px;
             padding: 20px;
-            background-color: var(--card);
+            background-color: rgba(30, 30, 30, 0.8); /* Ημιδιαφανές για να φαίνεται το διάστημα από πίσω */
             border-radius: 15px;
+            backdrop-filter: blur(5px); /* Εφέ θολώματος από πίσω (γυαλί) */
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .comparison {
             display: flex;
@@ -72,178 +150,75 @@
         }
         .screen {
             flex: 1;
-            min-width: 300px;
+            min-width: 250px;
+            max-width: 350px;
         }
         
-        /* --- PREMIUM IMAGE EFFECTS (ALEX UPGRADE) --- */
+        /* --- PREMIUM IMAGE EFFECTS --- */
         .screen img {
             width: 100%;
             border-radius: 10px;
             border: 2px solid #333;
-            cursor: zoom-in; /* Δείχνει ότι ανοίγει */
+            cursor: zoom-in;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
         }
-        
-        /* Hover Effect: Μεγέθυνση και Σκιά */
         .screen img:hover {
             transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.2); /* Πορτοκαλί λάμψη */
+            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.2);
             border-color: var(--primary);
         }
-        /* ------------------------------------------- */
+        /* ----------------------------- */
 
         .label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
-            text-transform: uppercase;
+            font-size: 0.9rem;
             letter-spacing: 1px;
         }
         .label.bad { color: #ff4444; }
         .label.good { color: #00C851; }
+        .label.info { color: #33b5e5; }
 
         /* Features */
         .features {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 40px;
             flex-wrap: wrap;
         }
         .feature-item {
-            background: var(--card);
+            background: rgba(30, 30, 30, 0.8); /* Ημιδιαφανές */
             padding: 20px;
             border-radius: 10px;
-            width: 200px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .feature-item strong { font-size: 1.1rem; margin-bottom: 5px; display: block;}
+        .feature-item p { font-size: 0.9rem; color: #ccc; line-height: 1.4;}
 
         footer {
-            margin-top: 80px;
+            margin-top: 60px;
             padding: 20px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
         }
 
-        /* --- LIGHTBOX STYLES (Το παράθυρο που ανοίγει) --- */
+        /* --- LIGHTBOX STYLES --- */
         #lightbox {
             position: fixed;
-            z-index: 1000;
+            z-index: 2000; /* Πάνω από όλα */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9); /* Σκοτεινό φόντο */
-            display: none; /* Κρυφό στην αρχή */
-            justify-content: center;
-            align-items: center;
-            cursor: zoom-out;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        #lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 5px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-            animation: zoomIn 0.3s ease;
-        }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <header>
-            <h1>Alex <span class="highlight">Cookie Guard</span></h1>
-            <p class="subtitle">Διάβασε ειδήσεις στην Ελλάδα χωρίς χάος.<br>Αυτόματο κλείσιμο Cookies, Popups και Ειδοποιήσεων.</p>
-            
-            <div>
-                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Λήψη για Firefox</a>
-                <a href="#" class="btn btn-chrome">⏳ Chrome (Σύντομα)</a>
-            </div>
-        </header>
-
-        <div class="demo-section">
-            <h2>Δες τη διαφορά</h2>
-            <p style="font-size: 0.9rem; color: #888; margin-bottom: 20px;">(Κάνε κλικ στις εικόνες για μεγέθυνση)</p>
-            <div class="comparison">
-                <div class="screen">
-                    <span class="label bad">ΠΡΙΝ (ΧΑΟΣ)</span>
-                    <img src="before.png" alt="Πριν την επέκταση" class="zoomable">
-                </div>
-                <div class="screen">
-                    <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ)</span>
-                    <img src="after.png" alt="Με την επέκταση" class="zoomable">
-                </div>
-            </div>
-        </div>
-
-        <div class="features">
-            <div class="feature-item">
-                <span class="icon">🚀</span>
-                <strong>Ταχύτητα</strong>
-                <p>Οι σελίδες φορτώνουν 2x πιο γρήγορα.</p>
-            </div>
-            <div class="feature-item">
-                <span class="icon">🛡️</span>
-                <strong>Ιδιωτικότητα</strong>
-                <p>Μπλοκάρει τους trackers που σε παρακολουθούν.</p>
-            </div>
-            <div class="feature-item">
-                <span class="icon">🇬🇷</span>
-                <strong>Made in Greece</strong>
-                <p>Φτιαγμένο ειδικά για τα ελληνικά sites.</p>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Alex Tools Suite. Open Source Project.</p>
-        </footer>
-    </div>
-
-    <script>
-        // 1. Φτιάχνουμε το στοιχείο Lightbox δυναμικά
-        const lightbox = document.createElement('div');
-        lightbox.id = 'lightbox';
-        document.body.appendChild(lightbox);
-
-        // 2. Επιλέγουμε όλες τις εικόνες που θέλουμε να ανοίγουν
-        const images = document.querySelectorAll('.screen img');
-
-        // 3. Προσθέτουμε τη λειτουργία κλικ σε κάθε εικόνα
-        images.forEach(image => {
-            image.addEventListener('click', e => {
-                lightbox.classList.add('active');
-                // Δημιουργούμε την εικόνα μέσα στο lightbox
-                const img = document.createElement('img');
-                img.src = image.src;
-                
-                // Καθαρίζουμε το lightbox από παλιά και βάζουμε τη νέα εικόνα
-                while (lightbox.firstChild) {
-                    lightbox.removeChild(lightbox.firstChild);
-                }
-                lightbox.appendChild(img);
-                
-                // Εμφάνιση
-                lightbox.style.display = 'flex';
-            });
-        });
-
-        // 4. Κλείσιμο όταν πατάμε οπουδήποτε στο μαύρο φόντο
-        lightbox.addEventListener('click', e => {
-            if (e.target !== e.currentTarget) return; // Αν πατήσεις στην εικόνα δεν κλείνει (προαιρετικό)
-            lightbox.style.display = 'none';
-        });
-        
-        // Κλείσιμο και αν πατήσεις πάνω στην εικόνα (για ευκολία στα κινητά)
-        lightbox.addEventListener('click', () => {
-             lightbox.style.display = 'none';
-        });
-    </script>
-
-</body>
-</html>
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none
