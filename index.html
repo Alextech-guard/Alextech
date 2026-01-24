@@ -7,35 +7,31 @@
     <style>
         :root {
             --primary: #FF7143; /* Το πορτοκαλί του Firefox */
-            --bg: #121212; /* Το βασικό μαύρο */
             --text: #ffffff;
-            --card: #1E1E1E;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 0;
             line-height: 1.6;
             text-align: center;
-            overflow-x: hidden; /* Για να μην βγάζει μπάρα κύλισης δεξιά */
+            overflow-x: hidden;
+            background-color: transparent; /* ΣΗΜΑΝΤΙΚΟ: Διάφανο για να φαίνονται τα αστέρια */
         }
 
         /* --- SPACE BACKGROUND ANIMATION --- */
-        /* Το γενικό δοχείο για το διάστημα που μένει πίσω από όλα */
         #space-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -10; /* Πίσω από το περιεχόμενο */
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); /* Λίγο πιο "βαθύ" μαύρο/μπλε */
+            z-index: -1; /* Πίσω από όλα */
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             overflow: hidden;
         }
 
-        /* Το στυλ για τα αστέρια (κουκκίδες) */
         .star-layer {
             position: absolute;
             top: 50%;
@@ -45,28 +41,22 @@
             border-radius: 50%;
             background-color: white;
             box-shadow: 
-                /* Γεννήτρια τυχαίων αστεριών με CSS shadows για 3 επίπεδα */
-                /* Layer 1 (Πολλά μικρά) */
                 -40vw 20vh 0px 0px #fff, 20vw 30vh 0px 0px #fff, -10vw -40vh 0px 1px #fff, 30vw -20vh 0px 0px #fff, -30vw 10vh 0px 1px #fff, 10vw 40vh 0px 0px #fff, 40vw -30vh 0px 1px #fff, -20vw -10vh 0px 0px #fff,
-                /* Layer 2 (Λιγότερα μεσαία) */
                 15vw 15vh 1px 0px #ccc, -25vw -25vh 1px 0px #ccc, 35vw -5vh 1px 0px #ccc, -5vw 35vh 1px 0px #ccc,
-                /* Layer 3 (Λίγα μεγάλα) */
                 -15vw 40vh 2px 1px #aaa, 25vw -35vh 2px 1px #aaa;
             opacity: 0;
-            animation: zoom 20s linear infinite;
+            animation: zoom 15s linear infinite;
         }
 
-        /* Διαφορετικές ταχύτητες και καθυστερήσεις για βάθος */
-        .layer-1 { animation-duration: 25s; }
-        .layer-2 { animation-duration: 18s; animation-delay: 5s; }
-        .layer-3 { animation-duration: 12s; animation-delay: 2s; }
+        .layer-1 { animation-duration: 15s; }
+        .layer-2 { animation-duration: 20s; animation-delay: 2s; }
+        .layer-3 { animation-duration: 25s; animation-delay: 4s; }
 
-        /* Η κίνηση ζουμ προς τον θεατή */
         @keyframes zoom {
-            0% { transform: scale(0.5); opacity: 0; }
+            0% { transform: scale(0.1); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: scale(4); opacity: 0; }
+            100% { transform: scale(3); opacity: 0; }
         }
 
         /* Κομήτης */
@@ -74,39 +64,35 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100px; /* Μήκος ουράς */
+            width: 80px;
             height: 2px;
             background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-            transform: rotate(-45deg); /* Διαγώνια κίνηση */
+            transform: rotate(-45deg);
             opacity: 0;
-            animation: comet-shoot 15s ease-in-out infinite; /* Πολύ αργή επανάληψη */
-            animation-delay: 8s; /* Ξεκινάει λίγο αργότερα */
+            animation: comet-shoot 10s ease-in-out infinite;
+            animation-delay: 3s;
         }
 
-        /* Η κίνηση του κομήτη */
         @keyframes comet-shoot {
             0% { transform: translate(-100px, -100px) rotate(-45deg); opacity: 1; }
-            20% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; } /* Διασχίζει την οθόνη γρήγορα */
-            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; } /* Περιμένει μέχρι την επόμενη επανάληψη */
+            20% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
+            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
         }
 
-        /* --- ΤΕΛΟΣ SPACE ANIMATION CSS --- */
-
-
+        /* --- Κυρίως Περιεχόμενο --- */
         .container {
+            position: relative;
+            z-index: 10; /* ΣΙΓΟΥΡΑ ΜΠΡΟΣΤΑ */
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            position: relative; /* Για να είναι πάνω από τα αστέρια */
-            z-index: 1;
         }
+
         /* Hero Section */
-        header {
-            padding: 50px 20px;
-        }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Λίγη σκιά για να ξεχωρίζει από τα αστέρια */ }
+        header { padding: 50px 20px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .highlight { color: var(--primary); }
-        p.subtitle { font-size: 1.1rem; color: #aaaaaa; margin-bottom: 30px; }
+        p.subtitle { font-size: 1.1rem; color: #dddddd; margin-bottom: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         
         /* Buttons */
         .btn {
@@ -117,16 +103,18 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
+            position: relative;
+            z-index: 10;
         }
         .btn-firefox {
             background-color: var(--primary);
             color: white;
             border: 2px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(255, 113, 67, 0.3); /* Λίγη λάμψη στο κουμπί */
+            box-shadow: 0 0 15px rgba(255, 113, 67, 0.4);
         }
         .btn-chrome {
-            background-color: rgba(0,0,0,0.3); /* Πιο διαφανές για να φαίνονται τα αστέρια */
+            background-color: rgba(0,0,0,0.5);
             color: #aaaaaa;
             border: 2px solid #555;
             cursor: not-allowed;
@@ -137,9 +125,9 @@
         .demo-section {
             margin-top: 40px;
             padding: 20px;
-            background-color: rgba(30, 30, 30, 0.8); /* Ημιδιαφανές για να φαίνεται το διάστημα από πίσω */
+            background-color: rgba(20, 20, 20, 0.6); /* Διάφανο μαύρο */
             border-radius: 15px;
-            backdrop-filter: blur(5px); /* Εφέ θολώματος από πίσω (γυαλί) */
+            backdrop-filter: blur(4px); /* Θόλωμα πίσω */
             border: 1px solid rgba(255,255,255,0.1);
         }
         .comparison {
@@ -158,16 +146,15 @@
         .screen img {
             width: 100%;
             border-radius: 10px;
-            border: 2px solid #333;
+            border: 2px solid #555;
             cursor: zoom-in;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
         }
         .screen img:hover {
             transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.2);
+            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.4);
             border-color: var(--primary);
         }
-        /* ----------------------------- */
 
         .label {
             display: block;
@@ -175,10 +162,11 @@
             font-weight: bold;
             font-size: 0.9rem;
             letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,1);
         }
-        .label.bad { color: #ff4444; }
-        .label.good { color: #00C851; }
-        .label.info { color: #33b5e5; }
+        .label.bad { color: #ff5555; }
+        .label.good { color: #00ff55; }
+        .label.info { color: #33ccff; }
 
         /* Features */
         .features {
@@ -189,33 +177,33 @@
             flex-wrap: wrap;
         }
         .feature-item {
-            background: rgba(30, 30, 30, 0.8); /* Ημιδιαφανές */
+            background: rgba(30, 30, 30, 0.6);
             padding: 20px;
             border-radius: 10px;
             width: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.1);
         }
         .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
         .feature-item strong { font-size: 1.1rem; margin-bottom: 5px; display: block;}
-        .feature-item p { font-size: 0.9rem; color: #ccc; line-height: 1.4;}
+        .feature-item p { font-size: 0.9rem; color: #ddd; line-height: 1.4;}
 
         footer {
             margin-top: 60px;
             padding: 20px;
-            color: #666;
+            color: #888;
             font-size: 0.8rem;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
-        /* --- LIGHTBOX STYLES --- */
+        /* --- LIGHTBOX --- */
         #lightbox {
             position: fixed;
-            z-index: 2000; /* Πάνω από όλα */
+            z-index: 9999;
             top: 0;
             left: 0;
             width: 100%;
@@ -225,16 +213,14 @@
             justify-content: center;
             align-items: center;
             cursor: zoom-out;
-            animation: fadeIn 0.3s ease;
         }
         #lightbox img {
             max-width: 95%;
             max-height: 95%;
             border-radius: 5px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
             animation: zoomIn 0.3s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
     </style>
 </head>
@@ -252,7 +238,7 @@
             <h1>Alex <span class="highlight">Cookie Guard</span></h1>
             <p class="subtitle">
                 Διάβασε ειδήσεις χωρίς χάος. Αυτόματο κλείσιμο Cookies & Popups.<br>
-                <span style="font-size: 0.9em; color: #888;">Read news without chaos. Auto-close Cookies & Popups.</span>
+                <span style="font-size: 0.9em; color: #ccc;">Read news without chaos. Auto-close Cookies & Popups.</span>
             </p>
             
             <div>
@@ -263,20 +249,20 @@
 
         <div class="demo-section">
             <h2>Δες τη διαφορά / See the difference</h2>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">(Κάνε κλικ για μεγέθυνση / Click to enlarge)</p>
+            <p style="font-size: 0.8rem; color: #ccc; margin-bottom: 20px;">(Κάνε κλικ για μεγέθυνση / Click to enlarge)</p>
             
             <div class="comparison">
                 <div class="screen">
-                    <span class="label bad">ΠΡΙΝ (ΧΑΟΣ) / BEFORE (CHAOS)</span>
-                    <img src="before.png" alt="Πριν / Before">
+                    <span class="label bad">ΠΡΙΝ (ΧΑΟΣ) / BEFORE</span>
+                    <img src="before.png" alt="Πριν">
                 </div>
                 <div class="screen">
-                    <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ) / AFTER (CLEAN)</span>
-                    <img src="after.png" alt="Μετά / After">
+                    <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ) / AFTER</span>
+                    <img src="after.png" alt="Μετά">
                 </div>
                 <div class="screen">
-                    <span class="label info">ΜΕΝΟΥ (ΕΛΕΓΧΟΣ) / MENU (CONTROL)</span>
-                    <img src="popup.png" alt="Μενού / Menu">
+                    <span class="label info">ΜΕΝΟΥ / MENU</span>
+                    <img src="popup.png" alt="Μενού">
                 </div>
             </div>
         </div>
@@ -295,7 +281,7 @@
             <div class="feature-item">
                 <span class="icon">⚡</span>
                 <strong>Γλίτωσε Κλικ / Save Clicks</strong>
-                <p>Γλίτωσε κλικ από τη ζωή σου!<br>Save precious clicks from your life!</p>
+                <p>Γλίτωσε κλικ από τη ζωή σου!<br>Save precious clicks!</p>
             </div>
         </div>
 
