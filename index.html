@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex Cookie Guard - Official Site | Save Logins & Privacy</title>
-    <meta name="description" content="The official website for Alex Cookie Guard. Handle cookie banners automatically and protect your privacy on Firefox and Chrome.">
+    <meta name="description" content="The official website for Alex Cookie Guard. handle cookie banners automatically and protect your privacy on Firefox and Chrome.">
     <meta name="keywords" content="cookie blocker, alexguard, privacy, firefox extension, chrome extension, save logins">
-    
     <style>
         :root {
             --primary: #FF7143; /* Το πορτοκαλί του Firefox */
             --text: #ffffff;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
@@ -21,49 +19,83 @@
             line-height: 1.6;
             text-align: center;
             overflow-x: hidden;
-            /* Το μαγικό ηλιοβασίλεμα */
-            background: url('background-sunset.png') no-repeat center center fixed;
-            background-size: cover;
-            animation: sunset-breath 20s ease-in-out infinite alternate;
+            background-color: transparent; /* ΣΗΜΑΝΤΙΚΟ: Διάφανο για να φαίνονται τα αστέρια */
         }
 
-        @keyframes sunset-breath {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
-        }
-
-        /* --- CSS ΓΙΑ ΤΟ SPLASH SCREEN --- */
-        #splash-screen {
+        /* --- SPACE BACKGROUND ANIMATION --- */
+        #space-container {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Πίσω από όλα */
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
         }
 
-        #splash-screen img {
-            max-width: 100%; max-height: 100%; object-fit: contain;
+        .star-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 2px;
+            width: 2px;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 
+                -40vw 20vh 0px 0px #fff, 20vw 30vh 0px 0px #fff, -10vw -40vh 0px 1px #fff, 30vw -20vh 0px 0px #fff, -30vw 10vh 0px 1px #fff, 10vw 40vh 0px 0px #fff, 40vw -30vh 0px 1px #fff, -20vw -10vh 0px 0px #fff,
+                15vw 15vh 1px 0px #ccc, -25vw -25vh 1px 0px #ccc, 35vw -5vh 1px 0px #ccc, -5vw 35vh 1px 0px #ccc,
+                -15vw 40vh 2px 1px #aaa, 25vw -35vh 2px 1px #aaa;
+            opacity: 0;
+            animation: zoom 15s linear infinite;
+        }
+
+        .layer-1 { animation-duration: 15s; }
+        .layer-2 { animation-duration: 20s; animation-delay: 2s; }
+        .layer-3 { animation-duration: 25s; animation-delay: 4s; }
+
+        @keyframes zoom {
+            0% { transform: scale(0.1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* Κομήτης */
+        .comet {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(-45deg);
+            opacity: 0;
+            animation: comet-shoot 10s ease-in-out infinite;
+            animation-delay: 3s;
+        }
+
+        @keyframes comet-shoot {
+            0% { transform: translate(-100px, -100px) rotate(-45deg); opacity: 1; }
+            20% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
+            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
         }
 
         /* --- Κυρίως Περιεχόμενο --- */
         .container {
             position: relative;
-            z-index: 10;
+            z-index: 10; /* ΣΙΓΟΥΡΑ ΜΠΡΟΣΤΑ */
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            margin-top: 50px; /* Για να μην κολλάει πάνω */
         }
 
+        /* Hero Section */
         header { padding: 50px 20px; }
         h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .highlight { color: var(--primary); }
         p.subtitle { font-size: 1.1rem; color: #dddddd; margin-bottom: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-
+        
         /* Buttons */
         .btn {
             display: inline-block;
@@ -77,56 +109,232 @@
             position: relative;
             z-index: 10;
         }
-        
         .btn-firefox {
             background-color: var(--primary);
             color: white;
             border: 2px solid var(--primary);
             box-shadow: 0 0 15px rgba(255, 113, 67, 0.4);
         }
-        
         .btn-chrome {
             background-color: rgba(0,0,0,0.5);
             color: #aaaaaa;
             border: 2px solid #555;
             cursor: not-allowed;
         }
-        
-        .btn:hover {
-            transform: scale(1.05);
+        .btn:hover { transform: scale(1.05); }
+
+        /* Demo Section */
+        .demo-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(20, 20, 20, 0.6); /* Διάφανο μαύρο */
+            border-radius: 15px;
+            backdrop-filter: blur(4px); /* Θόλωμα πίσω */
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .screen {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+        }
+        
+        /* --- PREMIUM IMAGE EFFECTS --- */
+        .screen img {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #555;
+            cursor: zoom-in;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+        }
+        .screen img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.4);
+            border-color: var(--primary);
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,1);
+        }
+        .label.bad { color: #ff5555; }
+        .label.good { color: #00ff55; }
+        .label.info { color: #33ccff; }
+
+        /* Features */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .feature-item {
+            background: rgba(30, 30, 30, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .feature-item strong { font-size: 1.1rem; margin-bottom: 5px; display: block;}
+        .feature-item p { font-size: 0.9rem; color: #ddd; line-height: 1.4;}
+
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            color: #888;
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- LIGHTBOX --- */
+        #lightbox {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        #lightbox img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
     </style>
 </head>
-
 <body>
 
-    <div id="splash-screen">
-        <div class="splash-content">
-            <img src="splash-surfer.jpg" alt="Surf without distractions">
-        </div>
+    <div id="space-container">
+        <div class="star-layer layer-1"></div>
+        <div class="star-layer layer-2"></div>
+        <div class="star-layer layer-3"></div>
+        <div class="comet"></div>
     </div>
 
     <div class="container">
         <header>
-            <h1>Alex Cookie Guard</h1>
-            <p class="subtitle">Handle cookie banners <span class="highlight">automatically</span> & save your logins safely.</p>
+            <h1>Alex <span class="highlight">Cookie Guard</span></h1>
+            <p class="subtitle">
+                Διάβασε ειδήσεις χωρίς χάος. Αυτόματο κλείσιμο Cookies & Popups.<br>
+                <span style="font-size: 0.9em; color: #ccc;">Read news without chaos. Auto-close Cookies & Popups.</span>
+            </p>
             
-            <a href="#" class="btn btn-firefox">Download for Firefox</a>
-            <a href="#" class="btn btn-chrome">Chrome (Coming Soon)</a>
+            <div>
+                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Λήψη για Firefox / Get it</a>
+                <a href="https://chromewebstore.google.com/detail/alex-cookie-guard/jfgjfbdkfdkipjefcpledjihmfmdefjm" target="_blank" class="btn" style="background: linear-gradient(90deg, #34A853 0%, #EA8600 100%); border: none; color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.5); padding: 10px 30px; border-radius: 50px; text-decoration: none; cursor: pointer; display: inline-block;">🚀 Λήψη για Chrome / Get it</a>
+            </div>
         </header>
+
+        <div class="demo-section">
+            <h2>Δες τη διαφορά / See the difference</h2>
+            <p style="font-size: 0.8rem; color: #ccc; margin-bottom: 20px;">(Κάνε κλικ για μεγέθυνση / Click to enlarge)</p>
+            
+            <div class="comparison">
+                <div class="screen">
+                    <span class="label bad">ΠΡΙΝ (ΧΑΟΣ) / BEFORE</span>
+                    <img src="before.png" alt="Πριν">
+                </div>
+                <div class="screen">
+                    <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ) / AFTER</span>
+                    <img src="after.png" alt="Μετά">
+                </div>
+                <div class="screen">
+                    <span class="label info">ΜΕΝΟΥ / MENU</span>
+                    <img src="popup.png" alt="Μενού">
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <span class="icon">🚀</span>
+                <strong>Ταχύτητα / Speed</strong>
+                <p>Οι σελίδες φορτώνουν 2x πιο γρήγορα.<br>Pages load 2x faster.</p>
+            </div>
+            <div class="feature-item">
+                <span class="icon">🛡️</span>
+                <strong>Ιδιωτικότητα / Privacy</strong>
+                <p>Μπλοκάρει τους trackers.<br>Blocks trackers.</p>
+            </div>
+            <div class="feature-item">
+                <span class="icon">⚡</span>
+                <strong>Γλίτωσε Κλικ / Save Clicks</strong>
+                <p>Γλίτωσε κλικ από τη ζωή σου!<br>Save precious clicks!</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Alex Tools Suite. Open Source Project.</p>
+        </footer>
     </div>
 
     <script>
-    window.addEventListener('load', function() {
-        setTimeout(function(){
-            const splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 1000);
-            }
-        }, 3000);
-    });
+        const lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        document.body.appendChild(lightbox);
+        const images = document.querySelectorAll('.screen img');
+        images.forEach(image => {
+            image.addEventListener('click', e => {
+                lightbox.classList.add('active');
+                const img = document.createElement('img');
+                img.src = image.src;
+                while (lightbox.firstChild) { lightbox.removeChild(lightbox.firstChild); }
+                lightbox.appendChild(img);
+                lightbox.style.display = 'flex';
+            });
+        });
+        lightbox.addEventListener('click', () => { lightbox.style.display = 'none'; });
     </script>
-
 </body>
 </html>
+<section id="contact" style="background: #1e2025; color: white; padding: 40px 20px; text-align: center; border-top: 2px solid #f39c12; margin-top: 50px; font-family: 'Segoe UI', sans-serif;">
+    <h2 style="color: #f39c12; margin-bottom: 20px;">🛡️ Contact & Support</h2>
+    <p style="color: #bdc3c7; margin-bottom: 30px;">Have questions or need support? Join the AlexGuard community!</p>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        
+        <a href="https://www.instagram.com/alexhlois/" target="_blank" 
+           style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+                  color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+            <span>📸 Instagram</span>
+        </a>
+<a href="mailto:television.screen.protection@gmail.com" target="_self" 
+           style="background: #3498db; color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+            <span>✉️ Email Me</span>
+        </a>
+    <p style="margin-top: 40px; font-size: 12px; color: #7f8c8d;">
+        © 2026 AlexTech - Proudly protecting your privacy.
+    </p>
+</section>
+
+
+
+
+
+
+
+
