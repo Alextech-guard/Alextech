@@ -19,66 +19,34 @@
             line-height: 1.6;
             text-align: center;
             overflow-x: hidden;
-            background-color: transparent; /* ΣΗΜΑΝΤΙΚΟ: Διάφανο για να φαίνονται τα αστέρια */
+            /* --- ΝΕΟ ABYSS BACKGROUND ΜΕ ΚΙΝΗΣΗ ΑΝΑΠΝΟΗΣ --- */
+            background: url('abyss-background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            animation: abyss-breath 20s ease-in-out infinite alternate;
         }
 
-        /* --- SPACE BACKGROUND ANIMATION --- */
-        #space-container {
+        @keyframes abyss-breath {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* --- CSS ΓΙΑ ΤΟ SPLASH SCREEN --- */
+        #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+
+        #splash-screen img {
             width: 100%;
             height: 100%;
-            z-index: -1; /* Πίσω από όλα */
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            overflow: hidden;
-        }
-
-        .star-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            height: 2px;
-            width: 2px;
-            border-radius: 50%;
-            background-color: white;
-            box-shadow: 
-                -40vw 20vh 0px 0px #fff, 20vw 30vh 0px 0px #fff, -10vw -40vh 0px 1px #fff, 30vw -20vh 0px 0px #fff, -30vw 10vh 0px 1px #fff, 10vw 40vh 0px 0px #fff, 40vw -30vh 0px 1px #fff, -20vw -10vh 0px 0px #fff,
-                15vw 15vh 1px 0px #ccc, -25vw -25vh 1px 0px #ccc, 35vw -5vh 1px 0px #ccc, -5vw 35vh 1px 0px #ccc,
-                -15vw 40vh 2px 1px #aaa, 25vw -35vh 2px 1px #aaa;
-            opacity: 0;
-            animation: zoom 15s linear infinite;
-        }
-
-        .layer-1 { animation-duration: 15s; }
-        .layer-2 { animation-duration: 20s; animation-delay: 2s; }
-        .layer-3 { animation-duration: 25s; animation-delay: 4s; }
-
-        @keyframes zoom {
-            0% { transform: scale(0.1); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
-
-        /* Κομήτης */
-        .comet {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 80px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-            transform: rotate(-45deg);
-            opacity: 0;
-            animation: comet-shoot 10s ease-in-out infinite;
-            animation-delay: 3s;
-        }
-
-        @keyframes comet-shoot {
-            0% { transform: translate(-100px, -100px) rotate(-45deg); opacity: 1; }
-            20% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
-            100% { transform: translate(calc(100vw + 100px), calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
+            object-fit: cover;
         }
 
         /* --- Κυρίως Περιεχόμενο --- */
@@ -228,11 +196,8 @@
 </head>
 <body>
 
-    <div id="space-container">
-        <div class="star-layer layer-1"></div>
-        <div class="star-layer layer-2"></div>
-        <div class="star-layer layer-3"></div>
-        <div class="comet"></div>
+    <div id="splash-screen">
+        <img src="splash-surfer.jpg" alt="Surf without distractions">
     </div>
 
     <div class="container">
@@ -292,7 +257,40 @@
         </footer>
     </div>
 
+    <section id="contact" style="background: #1e2025; color: white; padding: 40px 20px; text-align: center; border-top: 2px solid #f39c12; margin-top: 50px; font-family: 'Segoe UI', sans-serif;">
+        <h2 style="color: #f39c12; margin-bottom: 20px;">🛡️ Contact & Support</h2>
+        <p style="color: #bdc3c7; margin-bottom: 30px;">Have questions or need support? Join the AlexGuard community!</p>
+        
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            
+            <a href="https://www.instagram.com/alexhlois/" target="_blank" 
+               style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+                      color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+                <span>📸 Instagram</span>
+            </a>
+            <a href="mailto:television.screen.protection@gmail.com" target="_self" 
+               style="background: #3498db; color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+                <span>✉️ Email Me</span>
+            </a>
+        </div>
+        <p style="margin-top: 40px; font-size: 12px; color: #7f8c8d;">
+            © 2026 AlexTech - Proudly protecting your privacy.
+        </p>
+    </section>
+
     <script>
+        // --- SPLASH SCREEN LOGIC (6 δευτερόλεπτα) ---
+        window.addEventListener('load', function() {
+            setTimeout(function(){
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => splash.remove(), 1000); // Περιμένει 1 δευτερόλεπτο να γίνει διάφανο και μετά το διαγράφει
+                }
+            }, 6000); // 6000 milliseconds = 6 δευτερόλεπτα
+        });
+
+        // --- LIGHTBOX LOGIC ---
         const lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
         document.body.appendChild(lightbox);
@@ -311,29 +309,3 @@
     </script>
 </body>
 </html>
-<section id="contact" style="background: #1e2025; color: white; padding: 40px 20px; text-align: center; border-top: 2px solid #f39c12; margin-top: 50px; font-family: 'Segoe UI', sans-serif;">
-    <h2 style="color: #f39c12; margin-bottom: 20px;">🛡️ Contact & Support</h2>
-    <p style="color: #bdc3c7; margin-bottom: 30px;">Have questions or need support? Join the AlexGuard community!</p>
-    
-    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-        
-        <a href="https://www.instagram.com/alexhlois/" target="_blank" 
-           style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-                  color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
-            <span>📸 Instagram</span>
-        </a>
-<a href="mailto:television.screen.protection@gmail.com" target="_self" 
-           style="background: #3498db; color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
-            <span>✉️ Email Me</span>
-        </a>
-    <p style="margin-top: 40px; font-size: 12px; color: #7f8c8d;">
-        © 2026 AlexTech - Proudly protecting your privacy.
-    </p>
-</section>
-
-
-
-
-
-
-
