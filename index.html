@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Cookie Guard - Official Site | Save Logins & Privacy</title>
-    <meta name="description" content="The official website for Alex Cookie Guard. handle cookie banners automatically and protect your privacy on Firefox and Chrome.">
-    <meta name="keywords" content="cookie blocker, alexguard, privacy, firefox extension, chrome extension, save logins">
+    <title>Alex Cookie Guard - Official Site</title>
     <style>
-        :root {
-            --primary: #FF7143; /* Το πορτοκαλί του Firefox */
-            --text: #ffffff;
-        }
+        :root { --primary: #FF7143; --text: #ffffff; }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             color: var(--text);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            margin: 0; padding: 0;
             text-align: center;
             overflow-x: hidden;
-            /* --- ΝΕΟ ABYSS BACKGROUND ΜΕ ΠΙΟ ΖΩΝΤΑΝΗ ΑΝΑΠΝΟΗ --- */
+            /* Η ΑΒΥΣΣΟΣ ΠΟΥ ΑΝΑΠΝΕΕΙ */
             background: url('abyss-background.jpg') no-repeat center center fixed;
             background-size: cover;
             animation: abyss-breath 15s ease-in-out infinite alternate;
@@ -30,7 +24,7 @@
             100% { transform: scale(1.08); }
         }
 
-        /* --- CSS ΓΙΑ ΤΟ SPLASH SCREEN (ΤΕΛΕΙΑ ΕΦΑΡΜΟΓΗ) --- */
+        /* SPLASH SCREEN - ΣΤΑΘΕΡΟ ΧΩΡΙΣ ΚΙΝΗΣΗ */
         #splash-screen {
             position: fixed;
             top: 0; left: 0;
@@ -41,225 +35,77 @@
             align-items: center;
             z-index: 99999;
             transition: opacity 1s ease;
-            overflow: hidden;
         }
 
         #splash-screen img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Γεμίζει ΤΕΛΕΙΑ όλη την οθόνη, χωρίς μαύρα κενά! */
+            width: 100%; height: 100%;
+            object-fit: cover; /* Γεμίζει την οθόνη χωρίς κενά */
         }
 
-        /* --- Κυρίως Περιεχόμενο --- */
-        .container {
-            position: relative;
-            z-index: 10; /* ΣΙΓΟΥΡΑ ΜΠΡΟΣΤΑ */
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Hero Section */
+        .container { position: relative; z-index: 10; max-width: 1000px; margin: 0 auto; padding: 20px; }
         header { padding: 50px 20px; }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        h1 { font-size: 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .highlight { color: var(--primary); }
-        p.subtitle { font-size: 1.1rem; color: #dddddd; margin-bottom: 30px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         
-        /* Buttons */
         .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            margin: 10px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
+            display: inline-block; padding: 12px 25px; margin: 10px;
+            border-radius: 30px; text-decoration: none; font-weight: bold;
             transition: transform 0.2s;
-            position: relative;
-            z-index: 10;
         }
-        .btn-firefox {
-            background-color: var(--primary);
-            color: white;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 15px rgba(255, 113, 67, 0.4);
-        }
-        .btn-chrome {
-            background-color: rgba(0,0,0,0.5);
-            color: #aaaaaa;
-            border: 2px solid #555;
-            cursor: not-allowed;
-        }
-        .btn:hover { transform: scale(1.05); }
-
-        /* Demo Section */
-        .demo-section {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: rgba(20, 20, 20, 0.6); /* Διάφανο μαύρο */
-            border-radius: 15px;
-            backdrop-filter: blur(4px); /* Θόλωμα πίσω */
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .comparison {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .screen {
-            flex: 1;
-            min-width: 250px;
-            max-width: 350px;
-        }
+        .btn-firefox { background-color: var(--primary); color: white; }
         
-        /* --- PREMIUM IMAGE EFFECTS --- */
-        .screen img {
-            width: 100%;
-            border-radius: 10px;
-            border: 2px solid #555;
-            cursor: zoom-in;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+        .demo-section {
+            margin-top: 40px; padding: 20px;
+            background-color: rgba(20, 20, 20, 0.6);
+            border-radius: 15px; backdrop-filter: blur(4px);
         }
-        .screen img:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 113, 67, 0.4);
-            border-color: var(--primary);
-        }
+        .comparison { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .screen img { width: 100%; max-width: 350px; border-radius: 10px; }
 
-        .label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,1);
-        }
-        .label.bad { color: #ff5555; }
-        .label.good { color: #00ff55; }
-        .label.info { color: #33ccff; }
-
-        /* Features */
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-        .feature-item {
-            background: rgba(30, 30, 30, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            width: 220px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
-        .feature-item strong { font-size: 1.1rem; margin-bottom: 5px; display: block;}
-        .feature-item p { font-size: 0.9rem; color: #ddd; line-height: 1.4;}
-
-        footer {
-            margin-top: 60px;
-            padding: 20px;
-            color: #888;
-            font-size: 0.8rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* --- LIGHTBOX --- */
-        #lightbox {
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: zoom-out;
-        }
-        #lightbox img {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 5px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            animation: zoomIn 0.3s ease;
-        }
-        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
+        #contact { background: #1e2025; padding: 40px 20px; margin-top: 50px; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <img src="splash-surfer.jpg" alt="Surf without distractions">
+        <img src="splash-surfer.jpg" alt="Splash Surfer">
     </div>
 
     <div class="container">
         <header>
             <h1>Alex <span class="highlight">Cookie Guard</span></h1>
-            <p class="subtitle">
-                Διάβασε ειδήσεις χωρίς χάος. Αυτόματο κλείσιμο Cookies & Popups.<br>
-                <span style="font-size: 0.9em; color: #ccc;">Read news without chaos. Auto-close Cookies & Popups.</span>
-            </p>
-            
+            <p>Αυτόματο κλείσιμο Cookies & Popups.</p>
             <div>
-                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Λήψη για Firefox / Get it</a>
-                <a href="https://chromewebstore.google.com/detail/alex-cookie-guard/jfgjfbdkfdkipjefcpledjihmfmdefjm" target="_blank" class="btn" style="background: linear-gradient(90deg, #34A853 0%, #EA8600 100%); border: none; color: white; text-shadow: 0px 1px 2px rgba(0,0,0,0.5); padding: 10px 30px; border-radius: 50px; text-decoration: none; cursor: pointer; display: inline-block;">🚀 Λήψη για Chrome / Get it</a>
+                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Firefox</a>
+                <a href="https://chromewebstore.google.com/detail/alex-cookie-guard/jfgjfbdkfdkipjefcpledjihmfmdefjm" target="_blank" class="btn" style="background: linear-gradient(90deg, #34A853 0%, #EA8600 100%); color: white; border-radius: 50px;">🚀 Chrome</a>
             </div>
         </header>
 
         <div class="demo-section">
-            <h2>Δες τη διαφορά / See the difference</h2>
-            <p style="font-size: 0.8rem; color: #ccc; margin-bottom: 20px;">(Κάνε κλικ για μεγέθυνση / Click to enlarge)</p>
-            
             <div class="comparison">
-                <div class="screen">
-                    <span class="label bad">ΠΡΙΝ (ΧΑΟΣ) / BEFORE</span>
-                    <img src="before.png" alt="Πριν">
-                </div>
-                <div class="screen">
-                    <span class="label good">ΜΕΤΑ (ΚΑΘΑΡΟ) / AFTER</span>
-                    <img src="after.png" alt="Μετά">
-                </div>
-                <div class="screen">
-                    <span class="label info">ΜΕΝΟΥ / MENU</span>
-                    <img src="popup.png" alt="Μενού">
-                </div>
+                <div class="screen"><img src="before.png"></div>
+                <div class="screen"><img src="after.png"></div>
             </div>
         </div>
 
-        <div class="features">
-            <div class="feature-item">
-                <span class="icon">🚀</span>
-                <strong>Ταχύτητα / Speed</strong>
-                <p>Οι σελίδες φορτώνουν 2x πιο γρήγορα.<br>Pages load 2x faster.</p>
-            </div>
-            <div class="feature-item">
-                <span class="icon">🛡️</span>
-                <strong>Ιδιωτικότητα / Privacy</strong>
-                <p>Μπλοκάρει τους trackers.<br>Blocks trackers.</p>
-            </div>
-            <div class="feature-item">
-                <span class="icon">⚡</span>
-                <strong>Γλίτωσε Κλικ / Save Clicks</strong>
-                <p>Γλίτωσε κλικ από τη ζωή σου!<br>Save precious clicks!</p>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Alex Tools Suite. Open Source Project.</p>
-        </footer>
+        <section id="contact">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=television.screen.protection@gmail.com" target="_blank" style="color: #3498db; text-decoration: none; font-weight: bold;">✉️ Email Me</a>
+        </section>
     </div>
 
-    <section id="contact" style="background: #1e2025; color: white; padding: 40px 20px; text-align: center; border-top: 2px solid #f39c12; margin-top: 50px; font-family: 'Segoe UI', sans-serif;">
-        <h2 style="color: #f39c12; margin-bottom: 20px;">🛡️ Contact & Support</h2>
-        <p style="color: #bdc3c7; margin-bottom: 30px;">Have questions or need support? Join the AlexGuard community!</p>
-        
-        <div style="display: flex; justify-content: center; gap: 20
+    <script>
+        // ΔΙΟΡΘΩΜΕΝΟ: ΣΒΗΝΕΙ ΣΤΑ 6 ΔΕΥΤΕΡΟΛΕΠΤΑ ΚΑΙ ΦΕΥΓΕΙ ΤΕΛΕΙΩΣ
+        window.addEventListener('load', function() {
+            setTimeout(function(){
+                const splash = document.getElementById('splash-screen');
+                if(splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => {
+                        splash.style.display = 'none'; // Τέρμα, εξαφανίζεται!
+                    }, 1000); 
+                }
+            }, 6000); 
+        });
+    </script>
+</body>
+</html>
