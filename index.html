@@ -11,6 +11,17 @@
             --primary: #FF7143; /* Το πορτοκαλί του Firefox */
             --text: #ffffff;
         }
+        <script>
+window.addEventListener('load', function() { // Αυτό λέει: "Περίμενε να φορτώσουν ΟΛΑ"
+    setTimeout(function(){
+        const splash = document.getElementById('splash-screen');
+        if(splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => splash.remove(), 1000);
+        }
+    }, 3000);
+});
+</script>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
@@ -21,7 +32,11 @@
             overflow-x: hidden;
             background-color: transparent; /* ΣΗΜΑΝΤΙΚΟ: Διάφανο για να φαίνονται τα αστέρια */
         }
-
+         <div id="splash-screen">
+    <div class="splash-content">
+        <img src="splash-surfer.png" alt="Surf without distractions">
+    </div>
+</div>
         /* --- SPACE BACKGROUND ANIMATION --- */
         #space-container {
             position: fixed;
@@ -33,7 +48,27 @@
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             overflow: hidden;
         }
+         /* --- CSS ΓΙΑ ΤΟ SPLASH SCREEN --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* Μαύρο φόντο για να μην φαίνεται τίποτα από πίσω */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Πολύ υψηλό νούμερο για να είναι πάνω από όλα */
+    transition: opacity 1s ease; /* Για να σβήσει γλυκά */
+}
 
+#splash-screen img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+/* -------------------------------- */
         .star-layer {
             position: absolute;
             top: 50%;
@@ -330,6 +365,7 @@
         © 2026 AlexTech - Proudly protecting your privacy.
     </p>
 </section>
+
 
 
 
