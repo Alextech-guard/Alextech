@@ -3,109 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Cookie Guard - Official Site</title>
+    <title>Alex Cookie Guard - Official Site | Save Logins & Privacy</title>
     <style>
         :root { --primary: #FF7143; --text: #ffffff; }
-        
         body {
             font-family: 'Segoe UI', sans-serif;
             color: var(--text);
             margin: 0; padding: 0;
             text-align: center;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             overflow-x: hidden;
-            /* Η ΑΒΥΣΣΟΣ ΠΟΥ ΑΝΑΠΝΕΕΙ */
-            background: url('abyss-background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            animation: abyss-breath 15s ease-in-out infinite alternate;
         }
-
-        @keyframes abyss-breath {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
-        }
-
-        /* SPLASH SCREEN - ΣΤΑΘΕΡΟ ΧΩΡΙΣ ΚΙΝΗΣΗ */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 1s ease;
-        }
-
-        #splash-screen img {
-            width: 100%; height: 100%;
-            object-fit: cover; /* Γεμίζει την οθόνη χωρίς κενά */
-        }
-
         .container { position: relative; z-index: 10; max-width: 1000px; margin: 0 auto; padding: 20px; }
         header { padding: 50px 20px; }
         h1 { font-size: 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .highlight { color: var(--primary); }
-        
         .btn {
             display: inline-block; padding: 12px 25px; margin: 10px;
             border-radius: 30px; text-decoration: none; font-weight: bold;
             transition: transform 0.2s;
         }
-        .btn-firefox { background-color: var(--primary); color: white; }
-        
-        .demo-section {
-            margin-top: 40px; padding: 20px;
-            background-color: rgba(20, 20, 20, 0.6);
-            border-radius: 15px; backdrop-filter: blur(4px);
-        }
+        .btn-firefox { background-color: var(--primary); color: white; border: 2px solid var(--primary); }
+        .btn-chrome { background: linear-gradient(90deg, #34A853 0%, #EA8600 100%); color: white; border-radius: 50px; }
+        .demo-section { margin-top: 40px; padding: 20px; background-color: rgba(20, 20, 20, 0.6); border-radius: 15px; backdrop-filter: blur(4px); }
         .comparison { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .screen img { width: 100%; max-width: 350px; border-radius: 10px; }
-
-        #contact { background: #1e2025; padding: 40px 20px; margin-top: 50px; }
+        .screen img { width: 100%; max-width: 350px; border-radius: 10px; border: 2px solid #555; }
+        #contact { background: #1e2025; color: white; padding: 40px 20px; text-align: center; border-top: 2px solid #f39c12; margin-top: 50px; }
     </style>
 </head>
 <body>
-
-    <div id="splash-screen">
-        <img src="splash-surfer.jpg" alt="Splash Surfer">
-    </div>
-
     <div class="container">
         <header>
             <h1>Alex <span class="highlight">Cookie Guard</span></h1>
-            <p>Αυτόματο κλείσιμο Cookies & Popups.</p>
+            <p> handle cookie banners automatically and protect your privacy.</p>
             <div>
-                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Firefox</a>
-                <a href="https://chromewebstore.google.com/detail/alex-cookie-guard/jfgjfbdkfdkipjefcpledjihmfmdefjm" target="_blank" class="btn" style="background: linear-gradient(90deg, #34A853 0%, #EA8600 100%); color: white; border-radius: 50px;">🚀 Chrome</a>
+                <a href="https://addons.mozilla.org/el/firefox/addon/alex-cookie-guard-save-logins/" target="_blank" class="btn btn-firefox">🦊 Λήψη για Firefox</a>
+                <a href="https://chromewebstore.google.com/detail/alex-cookie-guard/ifgjfbdkfdkipicfcolodjlhmfmdcfjm" target="_blank" class="btn btn-chrome">🚀 Λήψη για Chrome</a>
             </div>
         </header>
-
         <div class="demo-section">
             <div class="comparison">
-                <div class="screen"><img src="before.png"></div>
-                <div class="screen"><img src="after.png"></div>
+                <div class="screen"><span style="color:#ff5555">ΠΡΙΝ</span><img src="before.png"></div>
+                <div class="screen"><span style="color:#00ff55">ΜΕΤΑ</span><img src="after.png"></div>
+                <div class="screen"><span style="color:#33ccff">ΜΕΝΟΥ</span><img src="popup.png"></div>
             </div>
         </div>
-
-        <section id="contact">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=television.screen.protection@gmail.com" target="_blank" style="color: #3498db; text-decoration: none; font-weight: bold;">✉️ Email Me</a>
-        </section>
     </div>
-
-    <script>
-        // ΔΙΟΡΘΩΜΕΝΟ: ΣΒΗΝΕΙ ΣΤΑ 6 ΔΕΥΤΕΡΟΛΕΠΤΑ ΚΑΙ ΦΕΥΓΕΙ ΤΕΛΕΙΩΣ
-        window.addEventListener('load', function() {
-            setTimeout(function(){
-                const splash = document.getElementById('splash-screen');
-                if(splash) {
-                    splash.style.opacity = '0';
-                    setTimeout(() => {
-                        splash.style.display = 'none'; // Τέρμα, εξαφανίζεται!
-                    }, 1000); 
-                }
-            }, 6000); 
-        });
-    </script>
+    <section id="contact">
+        <h2>🛡️ Contact & Support</h2>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top:20px;">
+            <a href="https://www.instagram.com/alexhlois/" target="_blank" style="color: white; text-decoration: none; font-weight: bold;">📸 Instagram</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=television.screen.protection@gmail.com" target="_blank" style="color: #3498db; text-decoration: none; font-weight: bold;">✉️ Email Me</a>
+        </div>
+    </section>
 </body>
 </html>
