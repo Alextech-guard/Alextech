@@ -23,6 +23,7 @@
         }
 
         /* --- SPLASH SCREEN ΣΤΑΘΕΡΟ --- */
+/* --- SPLASH SCREEN ΣΤΑΘΕΡΟ --- */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -36,12 +37,14 @@
             z-index: 99999;
             transition: opacity 1s ease;
             overflow: hidden;
+        } /* <--- ΑΥΤΗ Η ΑΓΚΥΛΗ ΕΛΕΙΠΕ ΣΤΟ ΔΙΚΟ ΣΟΥ! */
+
         #splash-screen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center bottom; /* Η ΜΑΓΙΚΗ ΕΝΤΟΛΗ: Κλειδώνει τον πάτο! */
-}
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center bottom; /* Η ΜΑΓΙΚΗ ΕΝΤΟΛΗ: Κλειδώνει τον πάτο! */
+        }
         /* --- SPACE BACKGROUND ANIMATION --- */
         #space-container {
             position: fixed;
@@ -324,4 +327,5 @@
     </script>
 </body>
 </html>
+
 
